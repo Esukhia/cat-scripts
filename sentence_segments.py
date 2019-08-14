@@ -7,8 +7,13 @@ from pybo import Text
 data_dir = Path('texts')
 data_dir.mkdir(exist_ok=True)
 
-for f in data_dir.glob('*.txt'):
-    if 'pybo' not in f.stem:
-        print(f'processing {f.name}', flush=True)
-        t = Text(f)
-        t.tokenize_sentences_plaintext
+# find all files to process, leaving aside those already processed
+texts = [d for d in data_dir.glob('*.txt') if 'pybo' not in d.stem]
+if not texts:
+    exit('There are no .txt files to process.\nExiting')
+
+# processing all the files
+for t in texts:
+    text = Text(t)
+    print(f'processing "{t.name}".', flush=True)
+    text.tokenize_sentences_plaintext
